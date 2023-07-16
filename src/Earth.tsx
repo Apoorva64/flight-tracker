@@ -6,6 +6,7 @@ import EarthBumpMap from "./assets/earthmap/8081_earthbump10k.jpg";
 import EarthNightMap from "./assets/earthmap/5_night_16k.jpg";
 import {Sphere} from "@react-three/drei";
 import {EARTH_RADIUS} from "./constants.ts";
+
 export function Earth() {
     // load texture
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

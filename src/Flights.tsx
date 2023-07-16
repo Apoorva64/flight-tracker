@@ -1,20 +1,26 @@
 import {useQuery} from "@tanstack/react-query";
-import "axios-jsonp";
 import {useEffect, useRef} from "react";
 import {InstancedMesh, Object3D} from "three";
-import {fetchAllWithChunks} from "./radar.ts";
-import {convertToCartesian} from "./utils.ts";
+import {convertToCartesian, flightRadarApi} from "./utils.ts";
 import {useRecoilState} from "recoil";
 import {selectedFlightState} from "./atoms.ts";
 import {ALTITUDE_FACTOR, EARTH_RADIUS, reductionFactor} from "./constants.ts";
 
 const temp = new Object3D()
 export default function Flights() {
+    const {data: zones} = useQuery({
+        queryKey: ['zones'],
+        queryFn: () => flightRadarApi.fetchZones(),
+    })
+
     const {data} = useQuery({
             queryKey: ['flights'],
-            queryFn: () => fetchAllWithChunks(undefined),
+            queryFn: () => flightRadarApi.fetchFromRadarMultiZone(
+                zones!,
+            ),
             refetchIntervalInBackground: true,
             refetchInterval: 20000,
+            enabled: !!zones,
         }
     )
 
@@ -25,7 +31,9 @@ export default function Flights() {
             data.forEach((flight, i) => {
                     const cartesian = convertToCartesian(flight.trailEntity.lat, flight.trailEntity.lng, EARTH_RADIUS + flight.trailEntity.alt * ALTITUDE_FACTOR)
                     temp.position.set(cartesian.x, cartesian.y, cartesian.z)
-                    temp.rotation.set(0, 0, 0)
+                    const bearing = flight.trailEntity.hd
+                    const cartesianRotation = convertToCartesian(0, bearing, 1)
+                    temp.rotation.set(flight.trailEntity.lng, flight.trailEntity.lat,0)
                     temp.updateMatrix()
                     instancedMeshRef.current.setMatrixAt(i, temp.matrix)
                 }
@@ -45,13 +53,12 @@ export default function Flights() {
                            }
 
             >
-                <boxGeometry args={[scale, scale, scale]}/>
+                <boxGeometry args={[scale, scale*5, scale]}/>
                 <meshStandardMaterial color={'green'}
                                       emissive={'yellow'}
                                       emissiveIntensity={2}
-
-
                 />
+
             </instancedMesh>
         </>
 

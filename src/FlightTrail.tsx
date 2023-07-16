@@ -1,7 +1,7 @@
 import {selectedFlightState} from "./atoms.ts";
 import {useRecoilValue} from "recoil";
 import {useQuery} from "@tanstack/react-query";
-import {convertToCartesian, fetchFlightDetails} from "./utils.ts";
+import {convertToCartesian, flightRadarApi} from "./utils.ts";
 import {ALTITUDE_FACTOR, EARTH_RADIUS, reductionFactor} from "./constants.ts";
 import {Vector3} from "three";
 import {Line} from "@react-three/drei";
@@ -10,7 +10,7 @@ export default function FlightTrail() {
     const selectedFlight = useRecoilValue(selectedFlightState);
     const {data} = useQuery({
         queryKey: ['flight', selectedFlight?.id],
-        queryFn: () => fetchFlightDetails(selectedFlight?.id || ''),
+        queryFn: () => flightRadarApi.fetchFlight(selectedFlight?.id || ''),
         refetchInterval: 10000,
         enabled: !!selectedFlight,
         refetchOnWindowFocus: true,
