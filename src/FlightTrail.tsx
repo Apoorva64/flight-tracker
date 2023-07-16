@@ -15,10 +15,8 @@ export default function FlightTrail() {
         enabled: !!selectedFlight,
         refetchOnWindowFocus: true,
     })
-    const lineWidth = 20000000 * reductionFactor
-    let points = data?.trail && data?.trail?.length > 6 && data?.trail?.filter(
-        (trailPoint) => (data?.flightHistory?.aircraft && trailPoint.ts > data?.flightHistory?.aircraft[0].time.real.departure)
-    ).map((trailPoint) => {
+    const lineWidth = 40000000 * reductionFactor
+    let points = data?.trail && data?.trail?.length > 6 && data?.trail?.map((trailPoint) => {
             const cartesian = convertToCartesian(trailPoint.lat, trailPoint.lng, EARTH_RADIUS + trailPoint.alt * ALTITUDE_FACTOR)
             return new Vector3(cartesian.x, cartesian.y, cartesian.z)
         }
