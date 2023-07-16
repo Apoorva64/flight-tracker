@@ -9,25 +9,24 @@ import {EARTH_RADIUS} from "./constants.ts";
 
 export function Earth() {
     // load texture
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const [colorMap, specularMap, bumpMap, nightMap] = useLoader(TextureLoader, [
             EarthColorMap,
             EarthSpecularMap,
             EarthBumpMap,
             EarthNightMap
         ]
-    )
+    ) as Texture[]
     return (
         <Sphere args={[EARTH_RADIUS, 50, 50]}>
-            <meshPhongMaterial specularMap={specularMap as Texture}/>
+            <meshPhongMaterial specularMap={specularMap}/>
             <meshStandardMaterial
-                map={colorMap as Texture}
-                bumpMap={bumpMap as Texture}
+                map={colorMap}
+                bumpMap={bumpMap}
                 bumpScale={0.01}
-                displacementMap={bumpMap as Texture}
+                displacementMap={bumpMap}
                 displacementScale={0.01}
                 displacementBias={0.0001}
-                emissiveMap={nightMap as Texture}
+                emissiveMap={nightMap}
                 emissiveIntensity={5}
                 emissive={0xaaaaaa}
 
