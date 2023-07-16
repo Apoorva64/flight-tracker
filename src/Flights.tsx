@@ -8,7 +8,7 @@ import {ALTITUDE_FACTOR, EARTH_RADIUS, reductionFactor} from "./constants.ts";
 import PlaneTexture from "./assets/planeTexture.png";
 import {useLoader} from "@react-three/fiber";
 
-let temp = new Object3D()
+const temp = new Object3D()
 export default function Flights() {
     const planeTexture = useLoader(TextureLoader, PlaneTexture) as Texture
     const {data: zones} = useQuery({
@@ -33,7 +33,6 @@ export default function Flights() {
     useEffect(() => {
         if (data) { // Set positions
             data.forEach((flight, i) => {
-                    temp = new Object3D()
                     const cartesian = convertToCartesian(flight.trailEntity.lat, flight.trailEntity.lng, EARTH_RADIUS + flight.trailEntity.alt * ALTITUDE_FACTOR)
                     temp.position.set(cartesian.x, cartesian.y, cartesian.z)
                     temp.scale.set(scale, scale, scale / 5)
