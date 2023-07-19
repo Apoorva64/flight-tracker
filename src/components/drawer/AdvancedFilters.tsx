@@ -94,13 +94,7 @@ export function AdvancedFilters() {
                                         airport: value.map((a) => a.iata) || undefined
                                     }
                                 })
-                                console.log({
-                                    ...liveFlightsOptions,
-                                    filters: {
-                                        ...liveFlightsOptions.filters,
-                                        airport: value.map((a) => a.icao) || undefined
-                                    }
-                                })
+
                             }
                             }
                             renderInput={(params) => (

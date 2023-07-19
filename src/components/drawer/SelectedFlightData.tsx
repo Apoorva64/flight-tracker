@@ -9,7 +9,6 @@ import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
 export function SelectedFlightData() {
     const selectedFlight = useRecoilValue(selectedFlightState);
-    console.log(selectedFlight)
     const {data} = useQuery({
         queryKey: ['flight', selectedFlight?.id],
         queryFn: () => flightRadarApi.fetchFlight(selectedFlight?.id || ''),

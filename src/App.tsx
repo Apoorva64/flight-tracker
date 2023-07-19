@@ -8,7 +8,7 @@ import Scene from "./components/3d/Scene.tsx";
 import {DrawerItems} from "./components/drawer/DrawerItems.tsx";
 import {Menu} from "@mui/icons-material";
 
-const drawerWidth = "400px"
+const drawerWidth = "max(20vw, 200px)"
 
 
 export function App() {

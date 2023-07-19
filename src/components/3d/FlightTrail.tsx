@@ -9,7 +9,6 @@ import {useEffect} from "react";
 
 export default function FlightTrail() {
     const selectedFlight = useRecoilValue(selectedFlightState);
-    console.log(selectedFlight)
     const {data, refetch} = useQuery({
         queryKey: ['flight', selectedFlight?.id],
         queryFn: () => flightRadarApi.fetchFlight(selectedFlight?.id || ''),
