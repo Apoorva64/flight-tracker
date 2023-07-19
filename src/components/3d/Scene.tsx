@@ -3,7 +3,7 @@ import {CameraControls, Stars, Text} from "@react-three/drei";
 import Flights from "./Flights.tsx";
 import FlightTrail from "./FlightTrail.tsx";
 import {Suspense} from "react";
-import {EARTH_RADIUS} from "./constants.ts";
+import {EARTH_RADIUS} from "../../constants.ts";
 import {Earth} from "./Earth.tsx";
 import {Bloom,EffectComposer, Vignette} from "@react-three/postprocessing";
 

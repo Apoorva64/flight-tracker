@@ -1,11 +1,11 @@
 import {useLoader} from "@react-three/fiber";
 import {Texture, TextureLoader} from "three";
-import EarthColorMap from "./assets/earthmap/8081_earthmap10k.jpg";
-import EarthSpecularMap from "./assets/earthmap/8081_earthspec10k.jpg";
-import EarthBumpMap from "./assets/earthmap/8081_earthbump10k.jpg";
-import EarthNightMap from "./assets/earthmap/5_night_16k.jpg";
+import EarthColorMap from "../../assets/earthmap/8081_earthmap10k.jpg";
+import EarthSpecularMap from "../../assets/earthmap/8081_earthspec10k.jpg";
+import EarthBumpMap from "../../assets/earthmap/8081_earthbump10k.jpg";
+import EarthNightMap from "../../assets/earthmap/5_night_16k.jpg";
 import {Sphere} from "@react-three/drei";
-import {EARTH_RADIUS} from "./constants.ts";
+import {EARTH_RADIUS} from "../../constants.ts";
 
 export function Earth() {
     // load texture

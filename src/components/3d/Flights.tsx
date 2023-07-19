@@ -1,11 +1,11 @@
 import {useQuery} from "@tanstack/react-query";
 import {useEffect, useRef} from "react";
 import {InstancedMesh, Matrix4, Object3D, Texture, TextureLoader, Vector3} from "three";
-import {convertToCartesian, flightRadarApi} from "./utils.ts";
-import {useRecoilState} from "recoil";
-import {selectedFlightState} from "./atoms.ts";
-import {ALTITUDE_FACTOR, EARTH_RADIUS, reductionFactor} from "./constants.ts";
-import PlaneTexture from "./assets/planeTexture.png";
+import {convertToCartesian, flightRadarApi} from "../../utils.ts";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {liveFlightsOptionsState, selectedFlightState} from "../../atoms.ts";
+import {ALTITUDE_FACTOR, EARTH_RADIUS, reductionFactor} from "../../constants.ts";
+import PlaneTexture from "../../assets/planeTexture.png";
 import {useLoader} from "@react-three/fiber";
 
 const temp = new Object3D()
@@ -15,19 +15,28 @@ export default function Flights() {
         queryKey: ['zones'],
         queryFn: () => flightRadarApi.fetchZones(),
     })
-
-    const {data} = useQuery({
+    const liveFlightsOptions = useRecoilValue(liveFlightsOptionsState);
+    const {data, refetch: refetchFlights} = useQuery({
             queryKey: ['flights'],
             queryFn: () => flightRadarApi.fetchFromRadarMultiZone(
                 zones!,
+                liveFlightsOptions,
             ),
             refetchIntervalInBackground: true,
-            refetchInterval: 20000,
+            refetchInterval: 10000,
             enabled: !!zones,
         }
     )
 
     const [, setSelectedFlight] = useRecoilState(selectedFlightState);
+
+    useEffect(() => {
+        if (zones) {
+            refetchFlights().catch((e) => console.error(e))
+        }
+    }, [liveFlightsOptions, refetchFlights, zones])
+
+
     const instancedMeshRef = useRef<InstancedMesh>(null!)
     const scale = 140000 * reductionFactor
     useEffect(() => {
@@ -52,13 +61,15 @@ export default function Flights() {
             // Update the instance
             instancedMeshRef.current.instanceMatrix.needsUpdate = true
         }
-    }, [data, scale])
+    }, [data, scale, liveFlightsOptions])
 
     return (
         <>
             <instancedMesh ref={instancedMeshRef} args={[undefined, undefined, data?.length || 0]}
                            onClick={(e) => {
-                               setSelectedFlight(data && e.instanceId && data[e.instanceId] || undefined)
+                               if (data && e.instanceId !== undefined) {
+                                   setSelectedFlight(data[e.instanceId])
+                               }
                            }
                            }
 
