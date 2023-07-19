@@ -13,7 +13,7 @@ const drawerWidth = "400px"
 
 export function App() {
     const theme = useTheme();
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
